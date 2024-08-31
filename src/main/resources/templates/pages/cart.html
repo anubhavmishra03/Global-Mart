@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <script src=https://code.jquery.com/jquery-3.6.0.min.js></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Shopping Cart</h1>
+        <div class="card">
+            <form th:action="@{/orderSummary}" method="get">
+                <ul>
+                    <li th:each="cartItem: ${cart}">
+                        <a th:href="@{/deleteFromCart(id=${cartItem.productID})}" class="btn btn-link">Remove Product from Cart</a>
+                        <span th:text="${cartItem.productName}"></span>
+                        <span th:text="${cartItem.description}"></span>
+                        <label class="form-label" for="quantity">Quantity: </label>
+                        <input type="number" class="form-control" name="quantity" required />
+                        <span th:text="${cartItem.price}"></span>
+                        <input type="hidden" name="productID"/>
+                        <input type="hidden" name="customerID"/>
+                    </li>
+                </ul>
+                <button type="submit">Proceed to Checkout</button>
+            </form>
+        </div>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User - Details</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <script src=https://code.jquery.com/jquery-3.6.0.min.js></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>User Details</h2>
+        <form th:action="@{/newOrder}" method="get">
+            <div class="card">
+                Name: <span th:text="${customer.customerName}"></span>
+                Email: <span th:text="${customer.email}"></span>
+                Phone: <span th:text="${customer.phone}"></span>
+                <label for="address" class="form-label">Street Address</label>
+                <input id="address" name="address" type="text" class="form-control" th:value="${customer.address}" required>
+                <label for="city" class="form-label">city</label>
+                <input id="city" name="city" type="text" class="form-control" th:value="${customer.city}" required>
+                <label for="state" class="form-label">State</label>
+                <input id="state" name="state" type="text" class="form-control" th:value="${customer.state}" required>
+                <label for="pincode" class="form-label">State</label>
+                <input id="pincode" name="pincode" type="text" class="form-control" th:value="${customer.pincode}" required>
+            </div>
+            <div class="d-flex">
+                <button onclick="window.location.href='/cart'">Cancel</button>
+                    <button type="submit">Proceed to Payment</button>
+            </div>
+        </form>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

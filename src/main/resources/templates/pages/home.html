@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - Global Mart</title>
+    <link rel="stylesheet" href="/css/Styles_home.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <script src=https://code.jquery.com/jquery-3.6.0.min.js></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <style>
+        .user-badge {
+            position: relative;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+        }
+        .user-badge img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+        .user-badge span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+            text-align: center;
+            white-space: nowrap;
+            width: 100%;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Global Mart</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Category
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/?category=Electronics">Electronics</a></li>
+                            <li><a class="dropdown-item" href="/?category=Footwear">Footwear</a></li>
+                            <li><a class="dropdown-item" href="/?category=Clothes">Clothes</a></li>
+                            <li><a class="dropdown-item" href="/?category=Furniture">Furniture</a></li>
+                            <li><a class="dropdown-item" href="/?category=Decoration">Decoration</a></li>
+                            <li><a class="dropdown-item" href="/?category=Kitchen">Kitchen</a></li>
+                            <li><a class="dropdown-item" href="/?category=Bathroom">Bathroom</a></li>
+                            <li><a class="dropdown-item" href="/?category=Fashion">Fashion</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item d-flex align-items-center" style="padding-right: 10px; padding-left: 10px;">
+                        <button class="nav-link" aria-current="page" onclick="window.location.href='/cart'">Cart 
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                            </svg>
+                        </button>
+                    </li>
+                    <li class="nav-item d-flex align-items-center" style="padding-right: 10px; padding-left: 10px;">
+                        <button class="nav-link" aria-current="page" onclick="window.location.href='/wishlist'">Wishlist 
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                            </svg>
+                        </button>
+                    </li>
+                </ul>
+                <form class="d-flex" th:action="@{/search}" method="get" role="search" style="padding-right: 10px;">
+                    <input class="form-control me-2" name="keyword" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+                <div class="user-badge" data-bs-toggle="dropdown" aria-expanded="false" th:if="${isLogin}">
+                    <img src="https://wallpapercave.com/wp/wp3429906.png" alt="User Avatar">
+                    <span th:text="${firstLetter}"></span>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><form th:action="@{/logout}" method="post">
+                            <button type="submit" class="btn btn-link">Logout</button>
+                        </form></li>
+                </ul>
+
+                <div class="user-badge" data-bs-toggle="dropdown" aria-expanded="false" th:unless="${isLogin}">
+                    <img src="https://th.bing.com/th/id/OIP.xo-BCC1ZKFpLL65D93eHcgAAAA?rs=1&pid=ImgDetMain" alt="User Avatar">
+                    <span></span>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><button class="dropdown-item" onclick="window.location.href='/signin'">Sign in</button></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li class="d-flex align-items-center" style="padding: 10px;"><small>New Customer?<button class="ms-1" onclick="window.location.href='/signup'">Sign up</button></small></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><button class="dropdown-item" onclick="window.location.href='/login'">You Seller Account</button></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="3" aria-label="Slide 4"></button>
+            <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="4" aria-label="Slide 5"></button>
+            <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="5" aria-label="Slide 6"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="https://cdn.dribbble.com/users/3237629/screenshots/12922258/artboard_1_copy_7_4x.jpg" class="d-block w-100" alt="..." style="height: 80vh; padding: 10px;">
+            </div>
+            <div class="carousel-item">
+                <img src="https://static.vecteezy.com/system/resources/previews/002/478/302/original/sale-electronics-banner-background-free-vector.jpg" class="d-block w-100" alt="..." style="height: 80vh; padding: 10px;">
+            </div>
+            <div class="carousel-item">
+                <img src="https://tipsmake.com/data/images/collection-of-the-most-beautiful-fashion-banners-picture-32-8h2n0YQtr.jpg" class="d-block w-100" alt="..." style="height: 80vh; padding: 10px;">
+            </div>
+            <div class="carousel-item">
+                <img src="https://mir-s3-cdn-cf.behance.net/project_modules/fs/a21c33185058159.655d1473544e8.jpg" class="d-block w-100" alt="..." style="height: 80vh; padding: 10px 25px 10px 25px;">
+            </div>
+            <div class="carousel-item">
+                <img src="https://i.pinimg.com/originals/07/f7/0d/07f70d59bbd3696e465a820024c05e52.png" class="d-block w-100" alt="..." style="height: 80vh; padding: 10px;">
+            </div>
+            <div class="carousel-item">
+                <img src="https://www.pacificdesigncenter.com/wp-content/uploads/2013/11/Euroconcepts-bath-Banner-PDC.jpg" class="d-block w-100" alt="..." style="height: 80vh; padding: 10px;">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+<div class="container py-3">
+    <div class="row">
+        <div class="col-lg-3 col-md-6 pb-3">
+            <div class="icon-box d-flex align-items-baseline">
+                <div class="icon-box-icon pe-3 pb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" color=#72AEC8 width="24" height="24" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
+                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l.84 4.479 9.144-.459L13.89 4zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                    </svg>
+                </div>
+                <div class="icon-box-content">
+                    <h3 class="card-title text-uppercase text-dark">Free Delivery</h3>
+                    <p style="color: #AEAEAE; padding-top: 5px">We are pleased to offer free delivery on all purchases over ₹499. Shop now and take advantage of this great offer!</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 pb-3">
+            <div class="icon-box d-flex align-items-baseline">
+                <div class="icon-box-icon pe-3 pb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" color=#72AEC8 width="24" height="24" fill="currentColor" class="bi bi-patch-check" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+                        <path d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911z"/>
+                    </svg>
+                </div>
+                <div class="icon-box-content">
+                    <h3 class="card-title text-uppercase text-dark">Quality guarantee</h3>
+                    <p style="color: #AEAEAE">Quality control ensures our products meet the highest standards of excellence and reliability.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 pb-3">
+            <div class="icon-box d-flex align-items-baseline">
+                <div class="icon-box-icon pe-3 pb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" color=#72AEC8 width="24" height="24" fill="currentColor" class="bi bi-tag" viewBox="0 0 16 16">
+                        <path d="M6 4.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m-1 0a.5.5 0 1 0-1 0 .5.5 0 0 0 1 0"/>
+                        <path d="M2 1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 1 6.586V2a1 1 0 0 1 1-1m0 5.586 7 7L13.586 9l-7-7H2z"/>
+                    </svg>
+                </div>
+                <div class="icon-box-content">
+                    <h3 class="card-title text-uppercase text-dark">Daily offers</h3>
+                    <p style="color: #AEAEAE; padding-top: 5px">Discover exciting daily offers and enjoy unbeatable deals every day!</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 pb-3">
+            <div class="icon-box d-flex align-items-baseline">
+                <div class="icon-box-icon pe-3 pb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" color=#72AEC8 width="24" height="24" fill="currentColor" class="bi bi-shield-check" viewBox="0 0 16 16">
+                        <path d="M5.338 1.59a61 61 0 0 0-2.837.856.48.48 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.7 10.7 0 0 0 2.287 2.233c.346.244.652.42.893.533q.18.085.293.118a1 1 0 0 0 .101.025 1 1 0 0 0 .1-.025q.114-.034.294-.118c.24-.113.547-.29.893-.533a10.7 10.7 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.8 11.8 0 0 1-2.517 2.453 7 7 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7 7 0 0 1-1.048-.625 11.8 11.8 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 63 63 0 0 1 5.072.56"/>
+                        <path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+                    </svg>
+                </div>
+                <div class="icon-box-content">
+                    <h3 class="card-title text-uppercase text-dark">100% secure payment</h3>
+                    <p style="color: #AEAEAE; padding-top: 5px">Experience peace of mind with our 100% secure payment system for all transactions.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section id="mobile-products" class="product-store position-relative padding-large no-padding-top d-flex justify-content-center">
+        <div class="container">
+            <div class="display-header d-flex justify-content-between pb-3">
+                <h2 class="display-7 text-dark text-uppercase">Products</h2>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="my-3 col-md-3" th:each="product: ${products}">
+                        <div class="card">
+                            <button class="btn" th:onclick="'window.location.href=\'/product?id=' + ${product.productID} + '\';'" style="border: none;">
+                                <div style="display: flex; justify-content: flex-end; position: absolute; right:0;">
+                                    <span th:text="${product.category}" class="badge rounded-pill bg-danger"></span>
+                                </div>
+                                <img th:src="@{'/images/' + ${product.image}}" alt="image" class="card-img-top">
+                            </button>
+                            <div class="card-body">
+                                <button class="btn" th:onclick="'window.location.href=\'/product?id=' + ${product.productID} + '\';'" style="border: none;">
+                                    <h5 class="card-title"><span th:text="${product.productName}"></span></h5>
+                                    <p class="card-text"><span style="font-size: 1.1rem;" th:text="${product.description.length() > 50 ? product.description.substring(0, 100) + '...' : product.description}"></span></p>
+                                    <p class="card-text" style="font-size: 0.8rem;">
+                                        By <span th:text="${product.adminName}"></span> on <span th:text="${#dates.format(product.date, 'dd/MM/yyyy')}"></span>
+                                    </p>
+                                </button>
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <button th:onclick="addToCart([[${product.productID}]])" class="btn btn-sm btn-outline-primary">Add to Cart 
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <button th:onclick="addToWishList([[${product.productID}]])" class="btn btn-sm btn-outline-primary">Add to Wishlist 
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+    <script>
+        var link = document.getElementById('productName');
+        var link2 = document.getElementById('productName2');
+        var link3 = document.getElementById('productName3');
+        var link4 = document.getElementById('productName4');
+        var originalColor = '#212529';
+        var hoverColor = '#72AEC8';
+
+        link2.addEventListener('mouseover', function() {
+            this.style.color = hoverColor;
+        });
+
+        link2.addEventListener('mouseout', function() {
+            this.style.color = originalColor;
+        });
+
+        link3.addEventListener('mouseover', function() {
+            this.style.color = hoverColor;
+        });
+
+        link3.addEventListener('mouseout', function() {
+            this.style.color = originalColor;
+        });
+
+        link4.addEventListener('mouseover', function() {
+            this.style.color = hoverColor;
+        });
+
+        link4.addEventListener('mouseout', function() {
+            this.style.color = originalColor;
+        });
+
+        link.addEventListener('mouseover', function() {
+            this.style.color = hoverColor;
+        });
+
+        link.addEventListener('mouseout', function() {
+            this.style.color = originalColor;
+        });
+    </script>
+    <script type="text/javascript">
+        function addToCart(productId) {
+            $.ajax({
+                type: "POST",
+                url: "/addToCart",
+                data: {
+                    id: productId
+                },
+                success: function(response) {
+                    alert(response);
+                },
+                error: function(xhr, status, error) {
+                    alert("Error adding product to cart: " + error);
+                }
+            });
+        }
+
+        function addToWishList(productId) {
+            $.ajax({
+                type: "POST",
+                url: "/addToWishList",
+                data: {
+                    id: productId
+                },
+                success: function(response) {
+                    alert(response);
+                },
+                error: function(xhr, status, error) {
+                    alert("Error adding product to cart: " + error);
+                }
+            });
+        }
+    </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

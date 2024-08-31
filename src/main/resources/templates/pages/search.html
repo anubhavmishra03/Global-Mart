@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - Global Mart</title>
+    <link rel="stylesheet" href="/css/Styles_product.css">
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <script src=https://code.jquery.com/jquery-3.6.0.min.js></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <style>
+        .user-badge {
+            position: relative;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+        }
+        .user-badge img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+        .user-badge span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+            text-align: center;
+            white-space: nowrap;
+            width: 100%;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Global Mart</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item d-flex align-items-center" style="padding-right: 10px;">
+                    <button class="nav-link" aria-current="page" onclick="window.location.href='/cart'">Cart</button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                    </svg>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Category
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Electronics</a></li>
+                        <li><a class="dropdown-item" href="#">Footwear</a></li>
+                        <li><a class="dropdown-item" href="#">Clothes</a></li>
+                        <li><a class="dropdown-item" href="#">Furniture</a></li>
+                        <li><a class="dropdown-item" href="#">Decoration</a></li>
+                        <li><a class="dropdown-item" href="#">Kitchen</a></li>
+                        <li><a class="dropdown-item" href="#">Bathroom</a></li>
+                        <li><a class="dropdown-item" href="#">Fashion</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form class="d-flex" th:action="@{/search}" method="get" role="search" style="padding-right: 10px;">
+                <input class="form-control me-2" name="keyword" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+            <div class="app-content-actions-wrapper d-flex" style="padding-right: 30px">
+                <div class="filter-button-wrapper">
+                    <button class="action-button filter jsFilter"><span>Filter</span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-filter"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></button>
+                    <div class="filter-menu">
+                        <label for="price">Price</label>
+                        <select id="price">
+                            <option value="asc">Low to High</option>
+                            <option value="desc">High to Low</option>
+                        </select>
+                        <div class="filter-menu-buttons">
+                            <button class="filter-button reset" onclick="resetFilters()">
+                                Reset
+                            </button>
+                            <button class="filter-button apply" onclick="applyFilters()">
+                                Apply
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="user-badge" data-bs-toggle="dropdown" aria-expanded="false" th:if="${isLogin}">
+                <img src="https://wallpapercave.com/wp/wp3429906.png" alt="User Avatar">
+                <span th:text="${firstLetter}"></span>
+            </div>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn btn-link">Logout</button>
+                </form></li>
+            </ul>
+
+            <div class="user-badge" data-bs-toggle="dropdown" aria-expanded="false" th:unless="${isLogin}">
+                <img src="https://th.bing.com/th/id/OIP.xo-BCC1ZKFpLL65D93eHcgAAAA?rs=1&pid=ImgDetMain" alt="User Avatar">
+                <span></span>
+            </div>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><button class="dropdown-item" onclick="window.location.href='/signin'">Sign in</button></li>
+                <li><hr class="dropdown-divider"></li>
+                <li class="d-flex align-items-center" style="padding: 10px;"><small>New Customer?<button class="ms-1" onclick="window.location.href='/signup'">Sign up</button></small></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><button class="dropdown-item" onclick="window.location.href='/login'">You Seller Account</button></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="display-header d-flex justify-content-between pb-3">
+        <h2 class="display-7 text-dark text-uppercase">Search Results</h2>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="my-3 col-md-3" th:each="product: ${searchResults}">
+                <a class="btn" style="border: none; width: 310px" th:href="@{/product(id=${product.productID})}">
+                    <div class="card" style="width: 315px">
+                        <div style="display: flex; justify-content: flex-end; position: absolute; right:0;">
+                            <span th:text="${product.category}" class="badge rounded-pill bg-danger"></span>
+                        </div>
+                        <img th:src="@{'/images/' + ${product.image}}" alt="image" class="card-img-top" style="height: 418px; width: 310px">
+                        <div class="card-body">
+                            <h5 class="card-title"><span th:text="${product.productName}"></span></h5>
+                            <p class="card-text"><span th:text="${product.description.length() > 50 ? product.description.substring(0, 100) + '...' : product.description}"></span></p>
+                            <p class="card-text">
+                                <small>By <span th:text="${product.adminName}"></span> on <span th:text="${#dates.format(product.date, 'dd/MM/yyyy')}"></span></small>
+                            </p>
+                            <a href="javascript:void(0);" th:onclick="addToCart([[${product.productID}]])" class="btn btn-sm btn-outline-primary">Add to Cart</a>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelector(".jsFilter").addEventListener("click", function () {
+    document.querySelector(".filter-menu").classList.toggle("active");
+    });
+
+    function applyFilters() {
+        const price = document.getElementById('price').value;
+        var keyword = "[[${keyword}]]";
+
+        let url = new URL('/search', window.location.origin);
+        url.searchParams.append('price', price);
+        url.searchParams.append('keyword', keyword);
+
+        window.location.href = url.toString();
+    }
+
+    function resetFilters() {
+        // Redirect to products page without parameters
+        window.location.href = '/search';
+    }
+</script>
+
+<script type="text/javascript">
+    function addToCart(productId) {
+        $.ajax({
+            type: "POST",
+            url: "/addToCart",
+            data: {
+                id: productId
+            },
+            success: function(response) {
+                alert(response);
+            },
+            error: function(xhr, status, error) {
+                alert("Error adding product to cart: " + error);
+            }
+        });
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User - Order Summary</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <script src=https://code.jquery.com/jquery-3.6.0.min.js></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Your Order Summary</h2>
+        <div class="card" th:each="cartItem: ${cart}">
+            Product Name: <span th:text="${cartItem.productName}"></span>
+            Quantity: <span th:text="${cartItem.quantity}"></span>
+            Price: <span th:text="${cartItem.price}"></span>
+        </div>
+        Total Price: <span th:text="${total}"></span>
+        <div class="d-flex">
+            <button onclick="window.location.href='/cart'">Cancel</button>
+            <form th:action="@{/userDetails}" method="get">
+                <button type="submit">Proceed</button>
+            </form>
+        </div>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
